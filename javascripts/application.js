@@ -33,7 +33,7 @@ days.forEach( function( day ) {
   $("<ul/>", {
     "class": "weekday",
     "id": day,
-    html: day
+    html: "<h2 class=heading>" + day + "</h2>"
   }).appendTo( $( ".weekdays" ) )
   .css( "text-transform", "capitalize" );
 });
@@ -42,13 +42,14 @@ days.forEach( function( day ) {
 data.timeslots.forEach( function( timeslot ) {
   days.forEach( function( day ) {
     if ( timeslot[day] === 1 ) {
+      var timeObj = timeslot.start_time
       $( "#" + day ).append(
         "<li>" +
         timeslot.field_name + ': ' +
         timeslot.start_time + ' - ' +
         timeslot.end_time +
         "</li>"
-      );
+      )
     }
   });
 });
