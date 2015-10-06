@@ -29,14 +29,25 @@ var days = [
 ]
 
 days.forEach( function( day ) {
-  $("<ul class='weekday'" + "id=" + day + ">" + day + "</ul>").appendTo( $( ".weekdays" ) );
+  $("<ul/>", {
+    "class": "weekday",
+    "id": day,
+    html: day
+  }).appendTo( $( ".weekdays" ) )
+  .css( "text-transform", "capitalize" );
 });
 
 
 data.timeslots.forEach( function( timeslot ) {
   days.forEach( function( day ) {
     if ( timeslot[day] === 1 ) {
-      $( "#" + day ).append( "<li>" + timeslot.field_name + ': ' + timeslot.start_time + "</li>");
+      $( "#" + day ).append(
+        "<li>" +
+        timeslot.field_name + ': ' +
+        timeslot.start_time + ' - ' +
+        timeslot.end_time +
+        "</li>"
+      );
     }
   });
 });
