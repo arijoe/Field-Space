@@ -44,11 +44,12 @@ data.timeslots.forEach( function( timeslot ) {
     if ( timeslot[day] === 1 ) {
       var timeObj = timeslot.start_time
       $( "#" + day ).append(
-        "<li>" +
-        timeslot.field_name + ': ' +
-        timeslot.start_time + ' - ' +
-        timeslot.end_time +
-        "</li>"
+        $("<li/>", {
+          "class": "timeslot",
+          html: "<span class=time>" + timeslot.start_time + ' - ' +
+                timeslot.end_time + "</span>" +
+                "<span class=field>" + timeslot.field_name + "</span>"
+        })
       )
     }
   });
