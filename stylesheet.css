@@ -34,8 +34,9 @@ h1 {
 }
 
 h2 {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 400;
+  margin: 5px;
 }
 
 /* TABLE */
@@ -43,18 +44,28 @@ h2 {
 .weekdays {
   display: inline-block;
   text-align: center;
-  min-width: 750px;
-  max-width: 950px;
+  width: calc(90%);
+  min-width: 850px;
+  max-width: 1000px;
+  outline: 1px solid #cc2;
 }
 
 .weekday {
-  float: left;
+  display: inline-block;
+  vertical-align: top;
   width: calc(12%);
   margin: 5px;
+  outline: 1px solid #000;
 }
 
 .timeslot {
   cursor: pointer;
+  margin: 5px;
+}
+
+.field {
+  font-size: 12px;
+  display: block;
 }
 
 .field.hidden {

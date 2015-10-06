@@ -11,7 +11,6 @@
 
   $.detailTimes.prototype.toggleClass = function () {
     $(this.$el[0]).find(".field").toggleClass("hidden");
-    console.log($(this.$el[0]).find(".field").html());
   };
 
   $.fn.detail = function () {
