@@ -18,6 +18,7 @@
 //     "field_surface": "grass"
 // },
 
+// Add days of the week to DOM
 var days = [
   'sunday',
   'monday',
@@ -37,7 +38,7 @@ days.forEach( function( day ) {
   .css( "text-transform", "capitalize" );
 });
 
-
+// fill weekdays with times of available fields
 data.timeslots.forEach( function( timeslot ) {
   days.forEach( function( day ) {
     if ( timeslot[day] === 1 ) {
@@ -51,8 +52,3 @@ data.timeslots.forEach( function( timeslot ) {
     }
   });
 });
-
-// $( "<ul/>", {
-//   "class": "scheduling",
-//   html: timeslots.join( "" )
-// }).appendTo( "body" );
