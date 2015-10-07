@@ -18,6 +18,7 @@
 //     "field_surface": "grass"
 // },
 
+// Change start_time value into human-readable format
 var formatTime = function ( timeObj ) {
   var hours = timeObj.slice(0, 2);
   var minutes = timeObj.slice(3, 5);
@@ -53,12 +54,33 @@ days.forEach( function( day ) {
   .css( "text-transform", "capitalize" );
 });
 
-// fill weekdays with times of available fields
-data.timeslots.forEach( function( timeslot ) {
-  days.forEach( function( day ) {
+// Add time values into days of the week
+days.forEach( function( day ) {
+  var startTimes = {};
+
+  data.timeslots.forEach( function( timeslot ) {
+    var timeStart = formatTime( timeslot.start_time );
+    var timeEnd = formatTime( timeslot.end_time );
+    var flag = true;
+
+    // If a timeslot is valid for that day...
     if ( timeslot[day] === 1 ) {
-      var timeStart = formatTime( timeslot.start_time );
-      var timeEnd = formatTime( timeslot.end_time );
+
+      // ...and other fields already exist for that time, add the field;...
+      var idx = 0;
+      $.each( startTimes, function( startTime, fields ) {
+        if ( startTime === timeStart && flag ) {
+          fields.push( timeslot.field_name );
+          flag = false;
+        };
+
+        idx += 1;
+      });
+
+      // ...else, add a new start-time for that day containing that field...
+      if ( flag ) {
+        startTimes[timeStart] = [timeslot.field_name];
+      };
 
       $( "#" + day ).append(
         $("<li/>", {
@@ -68,6 +90,8 @@ data.timeslots.forEach( function( timeslot ) {
                 "<span class=field>" + timeslot.field_name + "</span>"
         })
       )
-    }
-  });
-});
+    } // end of if statement matching timeslot to day of week
+  }); // end of days iterator
+
+  console.log(startTimes);
+});   // end of timeslots iterator
