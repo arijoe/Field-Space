@@ -18,6 +18,21 @@
 //     "field_surface": "grass"
 // },
 
+var formatTime = function ( timeObj ) {
+  var hours = timeObj.slice(0, 2);
+  var minutes = timeObj.slice(3, 5);
+  var meridian = ' AM';
+
+  if ( hours > 12 ) {
+    hours -= 12
+    meridian = ' PM';
+  } else if ( hours === 12 ) {
+    meridian = ' PM';
+  };
+
+  return hours + ':' + minutes + meridian;
+};
+
 // Add days of the week to DOM
 var days = [
   'sunday',
@@ -42,12 +57,14 @@ days.forEach( function( day ) {
 data.timeslots.forEach( function( timeslot ) {
   days.forEach( function( day ) {
     if ( timeslot[day] === 1 ) {
-      var timeObj = timeslot.start_time
+      var timeStart = formatTime( timeslot.start_time );
+      var timeEnd = formatTime( timeslot.end_time );
+
       $( "#" + day ).append(
         $("<li/>", {
           "class": "timeslot",
-          html: "<span class=time>" + timeslot.start_time + ' - ' +
-                timeslot.end_time + "</span>" +
+          html: "<span class=time>" + timeStart + ' - ' +
+                timeEnd + "</span>" +
                 "<span class=field>" + timeslot.field_name + "</span>"
         })
       )
