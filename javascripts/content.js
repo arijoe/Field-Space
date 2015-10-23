@@ -47,9 +47,8 @@ var days = [
 
 days.forEach( function( day ) {
   $("<ul/>", {
-    "class": "weekday",
-    "id": day,
-    html: "<h2 class=heading>" + day + "</h2>"
+    "class": day + " weekday",
+    html: "<h4 class=heading>" + day + "</h2>"
   }).appendTo( $( ".weekdays" ) )
   .css( "text-transform", "capitalize" );
 });
@@ -59,39 +58,57 @@ days.forEach( function( day ) {
   var startTimes = {};
 
   data.timeslots.forEach( function( timeslot ) {
-    var timeStart = formatTime( timeslot.start_time );
-    var timeEnd = formatTime( timeslot.end_time );
-    var flag = true;
+    var timeStart = formatTime( timeslot.start_time ),
+    timeEnd = formatTime( timeslot.end_time ),
+    flag = true;
 
     // If a timeslot is valid for that day...
     if ( timeslot[day] === 1 ) {
 
       // ...and other fields already exist for that time, add the field;...
-      var idx = 0;
-      $.each( startTimes, function( startTime, fields ) {
+      $.each( startTimes, function (startTime, fields) {
         if ( startTime === timeStart && flag ) {
-          fields.push( timeslot.field_name );
+          fields.push(
+            [
+              timeslot.field_name,
+              timeEnd,
+              timeslot.start_date,
+              timeslot.end_date
+            ]
+           );
           flag = false;
-        };
-
-        idx += 1;
+        }
       });
 
       // ...else, add a new start-time for that day containing that field...
       if ( flag ) {
-        startTimes[timeStart] = [timeslot.field_name];
-      };
-
-      $( "#" + day ).append(
-        $("<li/>", {
-          "class": "timeslot",
-          html: "<span class=time>" + timeStart + ' - ' +
-                timeEnd + "</span>" +
-                "<span class=field>" + timeslot.field_name + "</span>"
-        })
-      )
+        startTimes[timeStart] = [
+          [
+            timeslot.field_name,
+            timeEnd,
+            timeslot.start_date,
+            timeslot.end_date
+          ]
+        ];
+      }
     } // end of if statement matching timeslot to day of week
-  }); // end of days iterator
+  }); // end of timeslots iterator
 
-  console.log(startTimes);
-});   // end of timeslots iterator
+  // ...now add each start-time-to-fields matching to the DOM
+  $.each(startTimes, function (startTime, fieldData) {
+    var timeEnd = fieldData[0][1],
+    $el = $("<li/>", {
+      "class": "timeslot",
+      html: "<h6 class='time'>" +
+            startTime + " - " + timeEnd + "</h6>"
+    });
+
+    $( "." + day ).append($el);
+
+    fieldData.forEach( function (arr) {
+      $el.append(
+        "<span class='field'>" + arr[0] + "</span>"
+      );
+    });
+  }); // end of DOM addition iterator
+});   // end of days iterator
